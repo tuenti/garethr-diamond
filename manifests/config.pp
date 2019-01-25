@@ -28,15 +28,7 @@ class diamond::config {
     absent  => absent,
     default => present,
   }
-  $folder_ensure = $diamond::version ? {
-    absent  => absent,
-    default => directory,
-  }
-  file { '/etc/diamond':
-    ensure => $folder_ensure,
-    force  => true,
-  }
-  -> file { '/etc/diamond/diamond.conf':
+  file { '/etc/diamond/diamond.conf':
     ensure  => $file_ensure,
     content => template('diamond/etc/diamond/diamond.conf.erb'),
   }

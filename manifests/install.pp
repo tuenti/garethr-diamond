@@ -70,19 +70,27 @@ class diamond::install {
   }
 }
 
+  $folder_ensure = $diamond::version ? {
+    absent  => absent,
+    default => directory,
+  }
+
   file { '/var/run/diamond':
-    ensure => directory,
+    ensure => $folder_ensure,
+    force  => true,
   }
 
   file { '/etc/diamond':
-    ensure => directory,
+    ensure => $folder_ensure,
+    force  => true,
     owner  => root,
     group  => root,
     mode   => '0755',
   }
 
   file { '/etc/diamond/collectors':
-    ensure  => directory,
+    ensure => $folder_ensure,
+    force  => true,
     owner   => root,
     group   => root,
     mode    => '0755',
