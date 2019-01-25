@@ -23,8 +23,21 @@ class diamond::config {
   $hostname_method   = $diamond::hostname_method
   $handlers_path     = $diamond::handlers_path
   $rotate_days       = $diamond::rotate_days
-  file { '/etc/diamond/diamond.conf':
-    ensure  => present,
+
+  $file_ensure = $diamond::version ? {
+    absent  => absent,
+    default => present,
+  }
+  $folder_ensure = $diamond::version ? {
+    absent  => absent,
+    default => directory,
+  }
+  file { '/etc/diamond':
+    ensure => $folder_ensure,
+    force  => true,
+  }
+  -> file { '/etc/diamond/diamond.conf':
+    ensure  => $file_ensure,
     content => template('diamond/etc/diamond/diamond.conf.erb'),
   }
 }
